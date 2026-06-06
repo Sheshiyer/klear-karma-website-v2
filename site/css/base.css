@@ -122,38 +122,48 @@ body::after {
   z-index: -1;
 }
 
-/* Page Loader */
-.js .loading::before,
-.js .loading::after {
-  content: '';
+/* Fog → Clarity Loading Sequence (brand storytelling) */
+.loading-canvas {
   position: fixed;
-  z-index: 1000;
-}
-
-.js .loading::before {
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
-  background: var(--color-bg);
+  z-index: 1000;
+  background: #090711;
+  opacity: 1;
+  transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
 }
 
-.js .loading::after {
-  top: 50%;
-  left: 50%;
-  width: 60px;
-  height: 60px;
-  margin: -30px 0 0 -30px;
-  border-radius: 50%;
-  opacity: 0.4;
-  background: var(--color-signal-lotus);
-  animation: loaderAnim 0.7s linear infinite alternate forwards;
+.js .loading .loading-canvas {
+  opacity: 1;
 }
 
-@keyframes loaderAnim {
-  to {
-    opacity: 1;
-    transform: scale3d(0.5, 0.5, 1);
+.loading-done .loading-canvas {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Fallback simple loader when WebGL fails or reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .loading-canvas { display: none; }
+  
+  .js .loading::before,
+  .js .loading::after {
+    content: '';
+    position: fixed;
+    z-index: 1000;
+  }
+  .js .loading::before {
+    top: 0; left: 0; width: 100%; height: 100%; background: var(--color-bg);
+  }
+  .js .loading::after {
+    top: 50%; left: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px;
+    border-radius: 50%; opacity: 0.4; background: var(--color-signal-lotus);
+    animation: loaderAnim 0.7s linear infinite alternate forwards;
+  }
+  @keyframes loaderAnim {
+    to { opacity: 1; transform: scale3d(0.5, 0.5, 1); }
   }
 }
 
