@@ -624,65 +624,113 @@
       const canvas = document.getElementById('loading-canvas');
       if (!canvas) return;
 
+      // Hard safety net: never leave the user on a black screen longer than ~4s
+      setTimeout(() => {
+        if (document.body.classList.contains('loading')) {
+          canvas.style.transition = 'opacity 400ms ease';
+          canvas.style.opacity = '0';
+          document.body.classList.remove('loading');
+          setTimeout(() => canvas.remove(), 450);
+        }
+      }, 4200);
+
       const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
       if (!gl) {
-        setTimeout(() => document.body.classList.remove('loading'), 1400);
+        canvas.style.display = 'none';
+        document.body.classList.remove('loading');
         return;
       }
 
-      const vs = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+      const vs = `
+        attribute vec2 p;
+        void main() { gl_Position = vec4(p, 0., 1.); }
+      `;
 
-      // Exact shader provided by user, wrapped for WebGL + brand timing
+      // Exact つぶやきGLSL you provided — fog → clarity brand metaphor
       const fs = `
         precision highp float;
         uniform vec2 r;
         uniform float t;
 
-        vec3 hsv(float h,float s,float v){
-          vec3 c=vec3(h,s,v);
-          vec3 rgb=clamp(abs(mod(c.x*6.+vec3(0.,4.,2.),6.)-3.)-1.,0.,1.);
-          return c.z*mix(vec3(1.),rgb,c.y);
+        vec3 hsv(float h, float s, float v) {
+          vec3 c = vec3(h, s, v);
+          vec3 rgb = clamp(abs(mod(c.x * 6. + vec3(0., 4., 2.), 6.) - 3.) - 1., 0., 1.);
+          return c.z * mix(vec3(1.), rgb, c.y);
         }
 
-        void main(){
-          float i=0.,e=0.,g=0.,R,s;
-          vec3 q,p,d=vec3(gl_FragCoord.xy/r-.6,1.);
-          vec3 o=vec3(0.);
+        void main() {
+          float i = 0., e = 0., g = 0., R, s;
+          vec3 q, p, d = vec3(gl_FragCoord.xy / r - .6, 1.);
+          vec3 o = vec3(0.);
 
-          for(q.zy--;i++<99.;){
-            e+=i/8e5;
-            o.rgb+=hsv(.6,R+g*.3,e*i/40.);
+          for (q.zy--; i++ < 99.;) {
+            e += i / 8e5;
+            o.rgb += hsv(.6, R + g * .3, e * i / 40.);
 
-            s=4.;
-            p=q+=d*e*R*.2;
-            g+=p.y/s;
-            p=vec3((R=length(p))-.5+sin(t)*.02,exp2(mod(-p.z,s)/R)-.2,p);
+            s = 4.;
+            p = q += d * e * R * .2;
+            g += p.y / s;
+            p = vec3((R = length(p)) - .5 + sin(t) * .02, exp2(mod(-p.z, s) / R) - .2, p);
 
-            for(e=--p.y;s<1e3;s+=s)
-              e+=.03-abs(dot(sin(p.yzx*s),cos(p.xzz*s))/s*.6);
+            for (e = --p.y; s < 1e3; s += s)
+              e += .03 - abs(dot(sin(p.yzx * s), cos(p.xzz * s)) / s * .6);
           }
 
           // Dramatize fog → clarity (slow, persistent reveal)
-          float vig = 1. - length(gl_FragCoord.xy/r - .5) * 1.1;
-          float clarity = smoothstep(0.4, 3.8, t);   // slight defer in the curve
-          o = mix(o * 0.48, o, clarity);             // starts very foggy
+          float vig = 1. - length(gl_FragCoord.xy / r - .5) * 1.1;
+          float clarity = smoothstep(0.4, 3.8, t);
+          o = mix(o * 0.48, o, clarity);
           o *= vig * 1.15;
 
           gl_FragColor = vec4(o, 1.);
         }
       `;
 
-      function makeShader(type, src){
+      function makeShader(type, src) {
         const sh = gl.createShader(type);
         gl.shaderSource(sh, src);
         gl.compileShader(sh);
+        if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
+          console.error('Shader compile error:', gl.getShaderInfoLog(sh));
+          return null;
+        }
         return sh;
       }
 
+      const vShader = makeShader(gl.VERTEX_SHADER, vs);
+      const fShader = makeShader(gl.FRAGMENT_SHADER, fs);
+
+      if (!vShader || !fShader) {
+        canvas.style.display = 'none';
+        document.body.classList.remove('loading');
+        return;
+      }
+
       const prog = gl.createProgram();
-      gl.attachShader(prog, makeShader(gl.VERTEX_SHADER, vs));
-      gl.attachShader(prog, makeShader(gl.FRAGMENT_SHADER, fs));
+      gl.attachShader(prog, vShader);
+      gl.attachShader(prog, fShader);
       gl.linkProgram(prog);
+
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+        console.error('Loading shader link failed:', gl.getProgramInfoLog(prog));
+        // Force the site to appear — never leave the user on a black loader
+        canvas.style.transition = 'none';
+        canvas.style.opacity = '0';
+        document.body.classList.remove('loading');
+        setTimeout(() => canvas.remove(), 50);
+        return;
+      }
+
+      // Extra safety: verify the program is actually usable before touching it
+      if (!gl.isProgram(prog) || !gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+        console.warn('Loading program became invalid — forcing content visible');
+        canvas.style.transition = 'none';
+        canvas.style.opacity = '0';
+        document.body.classList.remove('loading');
+        setTimeout(() => canvas.remove(), 50);
+        return;
+      }
+
       gl.useProgram(prog);
 
       const buf = gl.createBuffer();
