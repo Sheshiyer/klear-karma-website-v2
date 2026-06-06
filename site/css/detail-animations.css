@@ -1,0 +1,110 @@
+/*
+ * Klear Karma Detail Page Image Animations
+ * Simple CSS animations for conceptual detail images
+ * Can be enhanced with GSAP for more complex sequences
+ */
+
+/* Base animation keyframes */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+@keyframes float-particles {
+  0% { transform: translateY(0) translateX(0); opacity: 0.6; }
+  50% { transform: translateY(-20px) translateX(10px); opacity: 1; }
+  100% { transform: translateY(-40px) translateX(0); opacity: 0.6; }
+}
+
+@keyframes rotate-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes ripple {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+/* Detail background base */
+.detail__bg {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated overlay for detail backgrounds */
+.detail__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, 
+    rgba(139, 92, 246, 0.1) 0%, 
+    transparent 70%);
+  animation: pulse-glow 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Image-specific animations applied via data attribute or class */
+
+/* Detail 0: Feel Seen First - Mirror ripple effect */
+.detail#detail-0 .detail__bg {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+/* Detail 1: Resonance Map - Slow rotation */
+.detail#detail-1 .detail__bg {
+  animation: breathe 8s ease-in-out infinite;
+}
+
+/* Detail 2: The Mirror - Central pulse */
+.detail#detail-2 .detail__bg {
+  animation: pulse-glow 5s ease-in-out infinite;
+}
+
+/* Detail 3: Practitioners - Connection pulse */
+.detail#detail-3 .detail__bg {
+  animation: breathe 7s ease-in-out infinite;
+}
+
+/* Detail 4: Begin Journey - Portal glow */
+.detail#detail-4 .detail__bg {
+  animation: pulse-glow 6s ease-in-out infinite;
+}
+
+/* Optional: Add floating particles via pseudo elements */
+.detail__bg::before {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--color-quiet-gold);
+  border-radius: 50%;
+  top: 20%;
+  left: 30%;
+  animation: float-particles 8s ease-in-out infinite;
+  box-shadow: 
+    20px 40px 0 var(--color-signal-lotus),
+    -30px 60px 0 var(--color-quiet-gold),
+    50px -20px 0 var(--color-signal-lotus),
+    -40px 30px 0 var(--color-quiet-gold);
+  opacity: 0.6;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .detail__bg,
+  .detail__bg::after,
+  .detail__bg::before {
+    animation: none !important;
+  }
+}
