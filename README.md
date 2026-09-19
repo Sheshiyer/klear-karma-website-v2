@@ -27,11 +27,11 @@
 
 | ⚡ Design-First | 🪞 GPT Image 2 Assets | 🎯 12-Section Flow |
 |-----------------|-----------------------|--------------------|
-| All key banners created with GPT Image 2 + brand references *before* HTML/CSS | 6 premium section banners + hero video (0.mp4) | Hero → Category → Problem → How It Works → Features → Trust Layer → Token Economy → Social Proof → Practitioners → Risk Reversal → Final CTA + Email → Footer |
+| All key banners created with GPT Image 2 + brand references *before* HTML/CSS | 6 premium section banners + hero video (0.mp4) | Hero → Category → Problem → How It Works → Features → Trust Layer → Token Economy → Social Proof → Practitioners → Risk Reversal → Role-specific invitation paths → Footer |
 
 **Key production details:**
-- Primary CTAs wired to `https://cal.com/meetshesh/30min` (with UTM tracking)
-- Soft email capture as backup conversion
+- Landing CTAs separate seeker and practitioner invitation requests.
+- Each role has a minimal request form with market and contact consent; the public API never issues a credential.
 - Hero uses `videos/0.mp4` (autoplay muted loop + poster fallback)
 - Floating pills hidden on mobile (≤768px)
 - Follows skill-clusters methodology + awwwards/GSAP/typography best practices
@@ -74,7 +74,8 @@ klear-karma-website-v2/
 │   ├── css/
 │   │   └── base.css      # Typography, awwwards patterns, new section styles, mobile rules
 │   ├── js/
-│   │   └── index.js      # Video hovers + ScrollTrigger entrances
+│   │   ├── index.js      # Video hovers + ScrollTrigger entrances
+│   │   └── admissions.js # Role-specific request JSON and feedback
 │   ├── img/              # All generated section banners + existing brand assets
 │   └── videos/           # 0.mp4 (hero) + supporting card videos
 ├── assets/               # Curated design assets for README/docs
@@ -107,11 +108,12 @@ The 6 generated section banners are the hero visuals:
 
 Hero uses the 6-second `0.mp4` video with elegant overlay and poster fallback.
 
-## 🔗 CTAs & Conversion
+## 🔗 Admissions and conversion
 
-- All primary buttons → **https://cal.com/meetshesh/30min** (UTM tagged per placement)
-- Final section includes email capture form as soft backup
-- Limited beta scarcity language + 299 THB / 299 INR pricing
+- `site/begin-journey.html` requests a seeker code; `site/practitioners.html#apply` requests a practitioner link.
+- Both forms POST to `https://api.klearkarma.space/api/marketing/waitlist` with `roleInterest`, `market` (`IN` or `TH`), email, optional name, required contact consent, and independent optional marketing consent.
+- A submitted request goes to an owner-reviewed admin queue. Approved seeker codes and practitioner links are manually delivered; signup and OTP redemption occur in the mobile app.
+- Keep the production forms unpublished until the companion API schema, serving account, Access policy, and end-to-end OTP acceptance are verified. See the API repository's `docs/admissions-release-plan.md`.
 
 ## 🛠️ Tech
 
