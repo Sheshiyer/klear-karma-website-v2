@@ -1284,7 +1284,11 @@ html {
 }
 
 /* Invitation requests are separate from account signup and Mirror intake. */
-html:not(.js) .admission-form {
+html:not(.admissions-ready) .admission-form {
+  display: none;
+}
+
+.admissions-ready .admission-form__unavailable {
   display: none;
 }
 

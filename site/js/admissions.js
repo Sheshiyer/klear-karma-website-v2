@@ -1,5 +1,7 @@
 const API_URL = 'https://api.klearkarma.space/api/marketing/waitlist';
 
+document.documentElement.classList.add('admissions-ready');
+
 for (const form of document.querySelectorAll('[data-admission-form]')) {
   const roleInterest = form.getAttribute('data-admission-form');
   const feedback = form.querySelector('[data-admission-feedback]');
