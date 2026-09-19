@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Begin Your Journey | Klear Karma</title>
-  <meta name="description" content="Create an account and receive 369 tokens—enough for your first Mirror session and to explore what Klear Karma can offer." />
+  <meta name="description" content="Request a seeker invitation for the Klear Karma beta in India or Thailand." />
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,10 +44,34 @@
           Back to Home
         </a>
         
-        <span class="detail__label">Get Started</span>
-        <h2 class="detail__title">Your First Reflection Is Free</h2>
+        <span class="detail__label">For Seekers · Limited Beta</span>
+        <h1 class="detail__title">Request a seeker invitation</h1>
         
-        <p class="detail__desc">Create an account and receive 369 tokens—enough for your first Mirror session and to explore what Klear Karma can offer. Share only what feels right. Skip what doesn't.</p>
+        <p class="detail__desc">Tell us how to contact you and where you are joining from. If approved, you will receive a code to use when you sign up in the Klear Karma app. Your first Mirror conversation starts there, after email verification.</p>
+        <noscript><p class="admission-form__privacy">Enable JavaScript to send an invitation request from this page.</p></noscript>
+
+        <form class="admission-form" data-admission-form="seeker" action="https://api.klearkarma.space/api/marketing/waitlist" method="post">
+          <div class="admission-form__fields">
+            <label>Name <span class="admission-form__optional">(optional)</span>
+              <input name="name" type="text" autocomplete="name" maxlength="120" />
+            </label>
+            <label>Email address
+              <input name="email" type="email" autocomplete="email" maxlength="254" required />
+            </label>
+            <label>Market
+              <select name="market" required>
+                <option value="">Select your market</option>
+                <option value="IN">India</option>
+                <option value="TH">Thailand</option>
+              </select>
+            </label>
+          </div>
+          <label class="admission-form__check"><input name="consentContact" type="checkbox" required /> I agree to be contacted about this invitation request.</label>
+          <label class="admission-form__check"><input name="consentMarketing" type="checkbox" /> Send me occasional product updates too. <span class="admission-form__optional">(optional)</span></label>
+          <p class="admission-form__privacy">We use these details to review your request. Read our <a href="privacy-policy.html">privacy policy</a>. No birth details or personal reflections belong in this form.</p>
+          <button class="detail__cta" type="submit">Request seeker invitation</button>
+          <p class="admission-form__feedback" data-admission-feedback aria-live="polite"></p>
+        </form>
         
         <div class="detail__screenshots">
           <img src="img/app/01-role-login-current-profile-start-mirror.png" alt="Get Started" class="detail__screenshot">
@@ -86,12 +110,7 @@
           </div>
         </div>
         
-        <a href="index.html" class="detail__cta">
-          Start Now—It's Free
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </a>
+        <p class="admission-form__privacy">Already have a seeker code? Open the Klear Karma app, choose seeker, and enter your code during sign up.</p>
       </div>
     </div>
   </div>
@@ -133,5 +152,6 @@
       <p class="footer__copyright">&copy; 2024 Klear Karma. All rights reserved.</p>
     </div>
   </footer>
+  <script type="module" src="js/admissions.js"></script>
 </body>
 </html>

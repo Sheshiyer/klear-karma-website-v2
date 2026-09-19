@@ -1283,6 +1283,116 @@ html {
   }
 }
 
+/* Invitation requests are separate from account signup and Mirror intake. */
+html:not(.js) .admission-form {
+  display: none;
+}
+
+.admission-paths {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.admission-form {
+  display: grid;
+  gap: var(--space-md);
+  max-width: 560px;
+  margin: var(--space-xl) auto;
+  text-align: left;
+}
+
+.admission-form__intro {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.admission-form__intro h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.admission-form__fields {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.admission-form__fields label {
+  display: grid;
+  gap: var(--space-xs);
+  font-weight: 600;
+}
+
+.admission-form__fields input,
+.admission-form__fields select {
+  width: 100%;
+  min-height: 48px;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: var(--radius-sm);
+  background: #1b1730;
+  color: #fff;
+  font: inherit;
+}
+
+.admission-form__fields input:focus-visible,
+.admission-form__fields select:focus-visible,
+.admission-form__check input:focus-visible,
+.admission-form button:focus-visible {
+  outline: 3px solid var(--color-quiet-gold);
+  outline-offset: 3px;
+}
+
+.admission-form__optional,
+.admission-form__privacy {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-weight: 400;
+}
+
+.admission-form__check {
+  display: flex;
+  align-items: start;
+  gap: var(--space-sm);
+  font-size: var(--text-sm);
+}
+
+.admission-form__check input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  accent-color: var(--color-quiet-gold);
+}
+
+.admission-form__privacy a {
+  color: var(--color-link);
+  text-decoration: underline;
+}
+
+.admission-form button {
+  width: fit-content;
+  border: 0;
+  font-family: var(--font-display);
+  cursor: pointer;
+}
+
+.admission-form button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.admission-form__feedback {
+  min-height: 2em;
+  margin: 0;
+  font-weight: 600;
+}
+
+.admission-form__feedback[role="alert"] {
+  color: #ffc9c9;
+}
+
 @media screen and (max-width: 480px) {
   .slides {
     grid-template-columns: 1fr;

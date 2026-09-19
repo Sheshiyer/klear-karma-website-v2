@@ -50,7 +50,7 @@
           Tokens
         </a>
       </nav>
-      <a href="/" class="frame__cta">
+      <a href="#apply" class="frame__cta">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M5 12h14"/>
           <path d="M12 5l7 7-7 7"/>
@@ -92,13 +92,34 @@
         </div>
       </div>
       
-      <div class="page__cta">
-        <a href="/" class="detail__cta">
-          Apply as a Practitioner
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </a>
+      <div class="page__cta" id="apply">
+        <div class="admission-form__intro">
+          <h2>Request a practitioner invitation</h2>
+          <p>Our team reviews beta requests. If invited, you will receive a one-time link to begin your application in the app. An invitation does not grant verified practitioner status.</p>
+        </div>
+        <noscript><p class="admission-form__privacy">Enable JavaScript to send an invitation request from this page.</p></noscript>
+        <form class="admission-form" data-admission-form="practitioner" action="https://api.klearkarma.space/api/marketing/waitlist" method="post">
+          <div class="admission-form__fields">
+            <label>Name <span class="admission-form__optional">(optional)</span>
+              <input name="name" type="text" autocomplete="name" maxlength="120" />
+            </label>
+            <label>Email address
+              <input name="email" type="email" autocomplete="email" maxlength="254" required />
+            </label>
+            <label>Market
+              <select name="market" required>
+                <option value="">Select your market</option>
+                <option value="IN">India</option>
+                <option value="TH">Thailand</option>
+              </select>
+            </label>
+          </div>
+          <label class="admission-form__check"><input name="consentContact" type="checkbox" required /> I agree to be contacted about this invitation request.</label>
+          <label class="admission-form__check"><input name="consentMarketing" type="checkbox" /> Send me occasional product updates too. <span class="admission-form__optional">(optional)</span></label>
+          <p class="admission-form__privacy">We use these details to review your request. Read our <a href="privacy-policy.html">privacy policy</a>. Credentials and other sensitive details are collected later in the protected app.</p>
+          <button class="detail__cta" type="submit">Request practitioner invitation</button>
+          <p class="admission-form__feedback" data-admission-feedback aria-live="polite"></p>
+        </form>
       </div>
     </div>
     
@@ -145,5 +166,6 @@
       </div>
     </footer>
   </main>
+  <script type="module" src="js/admissions.js"></script>
 </body>
 </html>

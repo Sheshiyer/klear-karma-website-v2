@@ -35,3 +35,10 @@ git status --short
 
 No registry, capsule, relocation, session, Paseo, provider, or deployment
 mutation has been performed by drafting this packet.
+
+## Admissions website checkpoint — 2026-09-19
+
+- Branch: `codex/admissions-flow-20260919`, based on remote `main` at `9cbc1ce`.
+- Landing, seeker, and practitioner pages now separate invitation requests; both forms send the documented public API payload with market and contact consent. Privacy copy describes this data.
+- Local IAB browser checks confirmed distinct paths and intercepted JSON payloads for seeker/IN and practitioner/TH. A simulated 202 response showed seeker confirmation; a simulated 503 showed practitioner recovery text. No test request reached the production API.
+- This is source and local browser evidence only. API/admin integration, Access sign-in, live deployment, and real recipient redemption remain separate acceptance gates. The draft-held packet status is unchanged.
